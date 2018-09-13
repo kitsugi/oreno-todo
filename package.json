@@ -8,12 +8,13 @@
   "license": "",
   "main": "app.js",
   "dependencies": {
+    "dateformat": "^3.0.3",
     "express": "^4.12.3",
-    "swagger-express-mw": "^0.7.0"
+    "swagger-express-mw": "^0.1.0"
   },
   "devDependencies": {
-    "should": "^13.2.3",
-    "supertest": "^3.3.0"
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
   },
   "scripts": {
     "start": "node app.js",
