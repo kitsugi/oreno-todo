@@ -22,7 +22,7 @@ paths:
     x-swagger-router-controller: todos
     get:
       tags: [Todos]
-      summary: todoリスト取得
+      summary: todo情報検索
       description: クエリに一致するtodo情報を更新日時の降順で一覧取得します。
       operationId: getTodoList
       parameters:

@@ -54,11 +54,31 @@ var supertest = require('supertest');
 var api = supertest('http://localhost:8080'); // supertest init;
 var expect = chai.expect;
 
-describe('/todos', function() {
-  describe('get', function() {
-    it('should respond with 200 successful operation', function(done) {
+/**
+ * todosテスト
+ */
+describe('/todos', () => {
+  /**
+   * todo情報検索
+   */
+  describe('get', () => {
+    /**
+     * 各テスト前の処理
+     */
+    beforeEach(done => {
+      done();
+    });
+
+    /**
+     * 各テスト後の処理
+     */
+    afterEach(done => {
+      done();
+    });
+
+    it('should respond with 200 successful operation', done => {
       /*eslint-disable*/
-      var schema = {
+      const schema = {
         "title": "todos",
         "type": "array",
         "items": {
@@ -111,25 +131,46 @@ describe('/todos', function() {
 
       /*eslint-enable*/
       api.get('/todos')
-      .query({
-q: 'DATA GOES HERE',status: 'DATA GOES HERE'
-      })
-      .set('Content-Type', 'application/json')
-      .expect(200)
-      .end(function(err, res) {
-        if (err) return done(err);
-
-        expect(validator.validate(res.body, schema)).to.be.true;
-        done();
-      });
+        .query({
+          //q: 'DATA GOES HERE',
+          status: 'undone'
+        })
+        .set('Content-Type', 'application/json')
+        .expect(200)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          };
+          // 評価
+          expect(validator.validate(res.body, schema)).to.be.true;
+          done();
+        }
+      );
     });
 
   });
 
-  describe('post', function() {
-    it('should respond with 201 successful operation', function(done) {
+  /**
+   * todo情報登録
+   */
+  describe('post', () => {
+    /**
+     * 各テスト前の処理
+     */
+    beforeEach(done => {
+      done();
+    });
+
+    /**
+     * 各テスト後の処理
+     */
+    afterEach(done => {
+      done();
+    });
+  
+    it('should respond with 201 successful operation', done => {
       /*eslint-disable*/
-      var schema = {
+      const schema = {
         "type": "object",
         "title": "TODOモデル",
         "required": [
@@ -178,22 +219,26 @@ q: 'DATA GOES HERE',status: 'DATA GOES HERE'
 
       /*eslint-enable*/
       api.post('/todos')
-      .set('Content-Type', 'application/json')
-      .send({
-        entry: 'DATA GOES HERE'
-      })
-      .expect(201)
-      .end(function(err, res) {
-        if (err) return done(err);
-
-        expect(validator.validate(res.body, schema)).to.be.true;
-        done();
-      });
+        .set('Content-Type', 'application/json')
+        .send({
+          title: '買い物', 
+          content: '大根、ネギ、豚肉500g、豆腐'
+        })
+        .expect(201)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          }
+          // 評価
+          expect(validator.validate(res.body, schema)).to.be.true;
+          done();
+        }
+      );
     });
 
-    it('should respond with 400 Bad request', function(done) {
+    it('should respond with 400 Bad request', done => {
       /*eslint-disable*/
-      var schema = {
+      const schema = {
         "type": "object",
         "title": "エラー情報",
         "required": [
@@ -212,17 +257,20 @@ q: 'DATA GOES HERE',status: 'DATA GOES HERE'
 
       /*eslint-enable*/
       api.post('/todos')
-      .set('Content-Type', 'application/json')
-      .send({
-        entry: 'DATA GOES HERE'
-      })
-      .expect(400)
-      .end(function(err, res) {
-        if (err) return done(err);
-
-        expect(validator.validate(res.body, schema)).to.be.true;
-        done();
-      });
+        .set('Content-Type', 'application/json')
+        .send({
+          content: '大根、ネギ、豚肉500g、豆腐'
+        })
+        .expect(400)
+        .end((err, res) => {
+          if (err) {
+            return done(err);
+          };
+          // 評価
+          expect(validator.validate(res.body, schema)).to.be.true;
+          done();
+        }
+      );
     });
 
   });

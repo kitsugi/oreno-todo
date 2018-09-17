@@ -96,7 +96,7 @@ module.exports = class TodosNedbDAO {
    * @param {string} todoId TODO識別子
    * @param {function(err, numRemoved)} callback コールバック関数
    */
-  delete(todoId) {
+  delete(todoId, callback) {
     this.db.remove({_id: todoId}, {}, (err, numRemoved) => {
       callback(err, numRemoved);
     });
