@@ -84,9 +84,8 @@ module.exports = class TodosNedbDAO {
    * @param {object} entry TODOエントリ
    * @param {function(err, numAffected)} callback コールバック関数
    */
-  update(todoId, entry, callback) {
-    
-    this.db.update({_id: todoId}, {$set: entry}, {}, function (err, numAffected) {
+  update(todoId, entry, callback) {    
+    this.db.update({_id: todoId}, {$set: entry}, {}, (err, numAffected) => {
       callback(err, numAffected);
     });
   }
@@ -97,9 +96,8 @@ module.exports = class TodosNedbDAO {
    * @param {string} todoId TODO識別子
    * @param {function(err, numRemoved)} callback コールバック関数
    */
-  delete(todoId, callback) {
-    this.db.remove({_id: todoId}, {}, function(err, numRemoved) {
-      console.log(err, numRemoved);
+  delete(todoId) {
+    this.db.remove({_id: todoId}, {}, (err, numRemoved) => {
       callback(err, numRemoved);
     });
   }

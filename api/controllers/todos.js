@@ -18,7 +18,7 @@ function getTodoList(req, res) {
     done = (status === 'done');
   }
 
-  dao.search(keyword, done, function(err, docs) {
+  dao.search(keyword, done, (err, docs) => {
     console.log(err, docs);
     res.json(docs);
   });
@@ -33,7 +33,7 @@ function getTodoList(req, res) {
 function getTodoById(req, res) {
   const todoId = req.swagger.params.id.value;
 
-  dao.getById(todoId, function(err, doc) {
+  dao.getById(todoId, (err, doc) => {
     if (doc) {
       res.status(200).json(doc);
     } else {
@@ -52,7 +52,7 @@ function createTodo(req, res) {
   const entry = req.swagger.params.entry.value;
 
   if (entry.title) {
-    dao.create(entry, function(err, newDoc) {
+    dao.create(entry, (err, newDoc) => {
       res.status(201).json(newDoc);
   });
   } else {
@@ -70,7 +70,8 @@ function updateTodo(req, res) {
   const todoId = req.swagger.params.id.value;
   const entry = req.swagger.params.entry.value;
 
-  dao.update(todoId, entry, function(err, numAffected) {
+  dao.update(todoId, entry, (err, numAffected) => {
+    console.log(err, numAffected);
     if (numAffected > 0) {
       getTodoById(req, res);
     } else {
@@ -88,7 +89,8 @@ function updateTodo(req, res) {
 function deleteTodo(req, res) {
   const todoId = req.swagger.params.id.value;
 
-  dao.delete(todoId, function(err, numRemoved) {
+  dao.delete(todoId, (err, numRemoved) => {
+    console.log(err, numRemoved);
     if (numRemoved > 0) {
       res.status(204).end();
     } else {
