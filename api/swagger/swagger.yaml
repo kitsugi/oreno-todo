@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "0.0.1"
+  version: "0.1.0"
   title: Todo Sample App
 # during dev, should point to your local machine
 host: localhost:8080
@@ -19,12 +19,22 @@ produces:
   - application/json
 paths:
   /todos:
-    x-swagger-router-controller: todo
+    x-swagger-router-controller: todos
     get:
       tags: [Todos]
-      summary: TODOの一覧取得
-      description: これまでに登録されているTODOの一覧を取得します
+      summary: todoリスト取得
+      description: クエリに一致するtodo情報を更新日時の降順で一覧取得します。
       operationId: getTodoList
+      parameters:
+        - in: query
+          name: q
+          type: string
+          description: 検索キーワード
+        - in: query
+          name: status
+          type: string
+          enum: [undone, done]
+          description: ステータス
       responses:
         '200':
           description: successful operation
@@ -32,105 +42,97 @@ paths:
             title: todos
             type: array
             items:
-              $ref: '#/definitions/Todo'
+              $ref: '#/definitions/TodoModel'
     post:
       tags: [Todos]
-      summary: TODO情報登録
-      description: 新しいTODO情報を登録します。
+      summary: todo情報登録
+      description: 新しいtodo情報を登録します。
       operationId: createTodo
       parameters:
-        - name: todo
-          in: body
-          description: todo parameter
-          required: true
+        - in: body
+          name: entry
+          description: todo entry parameter
+          required: false
           schema:
-            $ref: '#/definitions/Todo'
+            $ref: '#/definitions/TodoEntry'
       responses:
         '201':
           description: successful operation
           schema:
-            $ref: '#/definitions/Todo'
+            $ref: '#/definitions/TodoModel'
+        '400':
+          description: Bad request
+          schema:
+            $ref: "#/definitions/Error"
   /todos/{id}:
-    x-swagger-router-controller: todo
+    x-swagger-router-controller: todos
     parameters:
       - name: id
         in: path
         description: todo id
         required: true
-        type: integer
-        format: int64
+        type: string
+        minLength: 16
+        maxLength: 16
     get:
       tags: [Todos]
-      summary: TODO情報取得
-      description: 指定したidに一致するTODO情報を取得します。
+      summary: todo情報取得
+      description: 指定したidに一致するtodo情報を取得します。
       operationId: getTodoById
       responses:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/Todo'
+            $ref: '#/definitions/TodoModel'
+        '404':
+          description: A todo with the specified ID was not found.
+          schema:
+            $ref: "#/definitions/Error"
     put:
       tags: [Todos]
-      summary: TODO情報更新
-      description: 指定したidに一致するTODO情報を更新します。
+      summary: todo情報更新
+      description: 指定したidに一致するtodo情報を更新します。
       operationId: updateTodo
       parameters:
-        - name: todo
+        - name: entry
           in: body
-          description: todo parameter
+          description: todo entry parameter
           required: true
           schema:
-            $ref: '#/definitions/Todo'
+            $ref: '#/definitions/TodoEntry'
       responses:
         '200':
           description: successful operation
           schema:
-            $ref: '#/definitions/Todo'
+            $ref: '#/definitions/TodoModel'
+        '400':
+          description: Bad request
+          schema:
+            $ref: "#/definitions/Error"
+        '404':
+          description: A todo with the specified ID was not found.
+          schema:
+            $ref: "#/definitions/Error"
     delete:
       tags: [Todos]
-      summary: TODO情報削除
-      description: 指定したidに一致するTODO情報を削除します。
+      summary: todo情報削除
+      description: 指定したidに一致するtodo情報を削除します。
       operationId: deleteTodo
       responses:
         '204':
           description: successful operation
-  /hello:
-    # binds a127 app logic to a route
-    x-swagger-router-controller: hello_world
-    get:
-      description: Returns 'Hello' to the caller
-      # used as the method name of the controller
-      operationId: hello
-      parameters:
-        - name: name
-          in: query
-          description: The name of the person to whom to say hello
-          required: false
-          type: string
-      responses:
-        "200":
-          description: Success
+        '404':
+          description: A todo with the specified ID was not found.
           schema:
-            # a pointer to a definition
-            $ref: "#/definitions/HelloWorldResponse"
-        # responses may fall through to errors
-        default:
-          description: Error
-          schema:
-            $ref: "#/definitions/ErrorResponse"
+            $ref: "#/definitions/Error"
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
-  Todo:
+  TodoEntry:
     type: object
-    required: [id, title]
+    title: TODOエントリ
     properties:
-      id:
-        type: integer
-        description: TODOを識別する一意のID
-        readOnly: true
-        example: 1
       title:
         type: string
         description: タイトル
@@ -143,25 +145,44 @@ definitions:
         type: boolean
         description: 完了フラグ
         example: false
-      created_at:
+  TodoModel:
+    type: object
+    title: TODOモデル
+    required: [_id, title, done, createdAt, updatedAt]
+    properties:
+      _id:
+        type: string
+        description: todo id
+        readOnly: true
+        example: dQmwl6ojF9MB0Z8y
+      title:
+        type: string
+        description: タイトル
+        example: 買い物
+      content:
+        type: string
+        description: 内容
+        example: お茶、豆腐、豚肉300g、うどん
+      done:
+        type: boolean
+        description: 完了フラグ
+        example: false
+      createdAt:
         type: string
         format: date-time
         description: 作成日時
         example: 2018-09-20T10:00:00Z
-      updated_at:
+      updatedAt:
         type: string
         format: date-time
         description: 更新日時
         example: 2018-09-20T10:00:00Z
-  HelloWorldResponse:
-    required:
-      - message
+  Error:
+    type: object
+    title: エラー情報
+    required: [code, message]
     properties:
-      message:
-        type: string
-  ErrorResponse:
-    required:
-      - message
-    properties:
+      code:
+        type: integer
       message:
         type: string

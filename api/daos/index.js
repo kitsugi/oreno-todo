@@ -1,16 +1,14 @@
 'use strict';
 
-const TodosMemoryDAO = require('./todos-memory-dao');
+const TodosNedbDAO = require('./todos-nedb-dao');
 
 let dao = null;
 
 module.exports.getInstance = (type) => {
-  if (type === 'memory') {
-    if (dao === null) {
-      dao = new TodosMemoryDAO();
-    }
-    return dao;
+  if (dao === null) {
+    dao = new TodosNedbDAO();
   }
 
-  throw new Error('Unknown DAO type ' + type);
+  return dao;
+//  throw new Error('Unknown DAO type ' + type);
 }
