@@ -17,5 +17,9 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
   swaggerExpress.register(app);
 
   const port = process.env.PORT || 8080;
+
+  // swagger-ui使用
+  app.use(swaggerExpress.runner.swaggerTools.swaggerUi());
+
   app.listen(port);
 });
