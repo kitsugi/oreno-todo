@@ -131,7 +131,7 @@ paths:
 definitions:
   TodoEntry:
     type: object
-    title: TODOエントリ
+    title: todoエントリ
     properties:
       title:
         type: string
@@ -147,7 +147,7 @@ definitions:
         example: false
   TodoModel:
     type: object
-    title: TODOモデル
+    title: todoモデル
     required: [_id, title, done, createdAt, updatedAt]
     properties:
       _id:

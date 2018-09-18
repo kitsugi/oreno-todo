@@ -4,6 +4,9 @@ const Datastore = require('nedb')
 const Todo = require('../models/todo')
 
 module.exports = class TodosNedbDAO {
+  /**
+   * インスタンスを初期化します。
+   */
   constructor () {
     this.index = 0
     this.db = new Datastore({
@@ -14,7 +17,7 @@ module.exports = class TodosNedbDAO {
   }
 
   /**
-   * 条件に一致したTODOリストを取得します。
+   * 条件に一致したtodoリストを取得します。
    *
    * @param {string} keyword 検索キーワード
    * @param {boolean} done 完了フラグ
@@ -36,7 +39,7 @@ module.exports = class TodosNedbDAO {
   }
 
   /**
-   * TODOリストを取得します。
+   * todoリストを取得します。
    *
    * @param {function(err, docs)} callback コールバック関数
    */
@@ -47,9 +50,9 @@ module.exports = class TodosNedbDAO {
   }
 
   /**
-   * 指定した番号のTODO情報を取得します。
+   * 指定した番号のtodo情報を取得します。
    *
-   * @param {string} todoId TODO識別子
+   * @param {string} todoId todo識別子
    * @param {function(err, doc)} callback コールバック関数
    */
   getById (todoId, callback) {
@@ -63,7 +66,7 @@ module.exports = class TodosNedbDAO {
   }
 
   /**
-   * TODO情報を作成します。
+   * todo情報を作成します。
    *
    * @param {object} entry エントリ
    * @param {function(err, doc)} callback コールバック関数
@@ -72,16 +75,15 @@ module.exports = class TodosNedbDAO {
     const todo = Todo.create(entry)
 
     this.db.insert(todo, (err, newDoc) => {
-      console.log(err, newDoc)
       callback(err, newDoc)
     })
   }
 
   /**
-   * 指定した番号のTODO情報を更新します。
+   * 指定した番号のtodo情報を更新します。
    *
-   * @param {string} todoId TODO識別子
-   * @param {object} entry TODOエントリ
+   * @param {string} todoId todo識別子
+   * @param {object} entry todoエントリ
    * @param {function(err, numAffected)} callback コールバック関数
    */
   update (todoId, entry, callback) {
@@ -91,9 +93,9 @@ module.exports = class TodosNedbDAO {
   }
 
   /**
-   * 指定した識別子のTODO情報を削除します。
+   * 指定した識別子のtodo情報を削除します。
    *
-   * @param {string} todoId TODO識別子
+   * @param {string} todoId todo識別子
    * @param {function(err, numRemoved)} callback コールバック関数
    */
   delete (todoId, callback) {

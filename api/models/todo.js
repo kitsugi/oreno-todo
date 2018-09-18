@@ -7,7 +7,7 @@ module.exports = class Todo {
   /**
    * インスタンスを初期化します。
    *
-   * @param {string} _id TODO識別子
+   * @param {string} _id todo識別子
    * @param {string} title タイトル
    * @param {string} content 内容
    * @param {boolean} done 完了フラグ
@@ -24,7 +24,7 @@ module.exports = class Todo {
   }
 
   /**
-   * Todo情報を作成
+   * Todoインスタンスを生成します。
    *
    * @param {object} entry エントリ
    */
@@ -34,7 +34,7 @@ module.exports = class Todo {
   }
 
   /**
-   * TODO情報を更新します。
+   * todo情報を更新します。
    *
    * @param {string} title タイトル
    * @param {string} content 内容
@@ -47,7 +47,7 @@ module.exports = class Todo {
   }
 
   /**
-   * TODO情報を完了します。
+   * todo情報を完了します。
    */
   complete () {
     this.done = true

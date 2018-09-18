@@ -83,7 +83,7 @@ describe('/todos', () => {
         'type': 'array',
         'items': {
           'type': 'object',
-          'title': 'TODOモデル',
+          'title': 'todoモデル',
           'required': [
             '_id',
             'title',
@@ -168,7 +168,7 @@ describe('/todos', () => {
     it('should respond with 201 successful operation', done => {
       const schema = {
         'type': 'object',
-        'title': 'TODOモデル',
+        'title': 'todoモデル',
         'required': [
           '_id',
           'title',

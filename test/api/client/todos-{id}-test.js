@@ -82,7 +82,7 @@ function createTodo (done, callback) {
  * todo情報を削除
  *
  * @param {Function} done 完了通知メソッド
- * @param {string} todoId TODO識別子
+ * @param {string} todoId todo識別子
  */
 function deleteTodo (done, todoId) {
   api.del(`/todos/${todoId}`)
@@ -152,7 +152,7 @@ describe('/todos/{id}', () => {
     it('should respond with 200 successful operation', done => {
       const schema = {
         'type': 'object',
-        'title': 'TODOモデル',
+        'title': 'todoモデル',
         'required': [
           '_id',
           'title',
@@ -269,7 +269,7 @@ describe('/todos/{id}', () => {
     it('should respond with 200 successful operation', done => {
       const schema = {
         'type': 'object',
-        'title': 'TODOモデル',
+        'title': 'todoモデル',
         'required': [
           '_id',
           'title',
