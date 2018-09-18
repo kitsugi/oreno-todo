@@ -1,14 +1,14 @@
-'use strict';
+'use strict'
 
-const TodosNedbDAO = require('./todos-nedb-dao');
+const TodosNedbDAO = require('./todos-nedb-dao')
 
-let dao = null;
+let dao = null
 
 module.exports.getInstance = (type) => {
   if (dao === null) {
-    dao = new TodosNedbDAO();
+    dao = new TodosNedbDAO()
   }
 
-  return dao;
-//  throw new Error('Unknown DAO type ' + type);
+  return dao
+//  throw new Error('Unknown DAO type ' + type)
 }
