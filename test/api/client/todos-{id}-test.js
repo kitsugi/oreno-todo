@@ -56,76 +56,18 @@ var api = supertest('http://localhost:8080') // supertest init
 var expect = chai.expect
 
 /**
- * todo情報を作成
- *
- * @param {Function} done 完了通知メソッド
- * @param {Function} callback コールバック関数
- */
-function createTodo (done, callback) {
-  api.post('/todos')
-    .set('Content-Type', 'application/json')
-    .send({
-      title: '本購入',
-      content: 'Docker/Kubernetes 実践コンテナ開発入門'
-    })
-    .expect(201)
-    .end((err, res) => {
-      if (err) {
-        done(err)
-      }
-      callback(res.body._id)
-      done()
-    })
-}
-
-/**
- * todo情報を削除
- *
- * @param {Function} done 完了通知メソッド
- * @param {string} todoId todo識別子
- */
-function deleteTodo (done, todoId) {
-  api.del(`/todos/${todoId}`)
-    .set('Content-Type', 'application/json')
-    .expect(204)
-    .end(() => done())
-}
-
-/**
- * todo情報全取得
- */
-async function getTodoIds () {
-  return new Promise((resolve, reject) => {
-    api.get('/todos')
-      .set('Content-Type', 'application/json')
-      .expect(200)
-      .end((err, res) => {
-        if (err) {
-          reject(err)
-        }
-        resolve(res.body.map(x => x._id))
-      })
-  })
-}
-
-/**
- * todo情報全削除
- */
-async function cleanupTodo () {
-  const todoIds = await getTodoIds()
-
-  todoIds.forEach(todoId => {
-    api.del(`/todos/${todoId}`)
-      .set('Content-Type', 'application/json')
-      .expect(204)
-      .end()
-  })
-}
-
-/**
  * todos/{id}テスト
  */
 describe('/todos/{id}', () => {
+  /**
+   * テスト後の処理
+   */
+  after(done => {
+    deleteTodos(() => {
+      done()
+    })
+  })
+
   /**
    * todo情報1件取得
    */
@@ -136,8 +78,16 @@ describe('/todos/{id}', () => {
      * 各テスト前の処理
      */
     beforeEach(done => {
-      createTodo(done, id => {
-        todoId = id
+      const entry = {
+        title: '本購入',
+        content: 'Docker/Kubernetes 実践コンテナ開発入門'
+      }
+      createTodo(entry, (err, res) => {
+        if (err) {
+          done(err)
+        }
+        todoId = res.body._id
+        done()
       })
     })
 
@@ -145,11 +95,13 @@ describe('/todos/{id}', () => {
      * 各テスト後の処理
      */
     afterEach(done => {
-      deleteTodo(done, todoId)
+      deleteTodos(() => {
+        done()
+      })
     })
 
     // 存在する
-    it('should respond with 200 successful operation', done => {
+    it('todo取得 正常 データあり', done => {
       const schema = {
         'type': 'object',
         'title': 'todoモデル',
@@ -205,13 +157,13 @@ describe('/todos/{id}', () => {
             return done(err)
           }
           // 評価
-          expect(validator.validate(res.body, schema)).to.be.true
+          expect(validator.validate(res.body, schema)).to.equal(true)
           done()
         })
     })
 
     // 存在しない
-    it('should respond with 404 A todo with the specified...', done => {
+    it('todo取得 異常 データなし', done => {
       const schema = {
         'type': 'object',
         'title': 'エラー情報',
@@ -237,7 +189,7 @@ describe('/todos/{id}', () => {
             return done(err)
           }
           // 評価
-          expect(validator.validate(res.body, schema)).to.be.true
+          expect(validator.validate(res.body, schema)).to.equal(true)
           done()
         })
     })
@@ -253,8 +205,16 @@ describe('/todos/{id}', () => {
      * 各テスト前の処理
      */
     beforeEach(done => {
-      createTodo(done, id => {
-        todoId = id
+      const entry = {
+        title: 'ハイキング',
+        content: '飯能アルプス 25km'
+      }
+      createTodo(entry, (err, res) => {
+        if (err) {
+          done(err)
+        }
+        todoId = res.body._id
+        done()
       })
     })
 
@@ -262,11 +222,13 @@ describe('/todos/{id}', () => {
      * 各テスト後の処理
      */
     afterEach(done => {
-      deleteTodo(done, todoId)
+      deleteTodos(() => {
+        done()
+      })
     })
 
     // 存在する
-    it('should respond with 200 successful operation', done => {
+    it('todo更新 正常 データあり', done => {
       const schema = {
         'type': 'object',
         'title': 'todoモデル',
@@ -327,13 +289,13 @@ describe('/todos/{id}', () => {
             return done(err)
           }
           // 評価
-          expect(validator.validate(res.body, schema)).to.be.true
+          expect(validator.validate(res.body, schema)).to.equal(true)
           done()
         })
     })
 
     // 項目違い
-    it('should respond with 400 Bad request', done => {
+    it('todo更新 異常 タイトル空', done => {
       const schema = {
         'type': 'object',
         'title': 'エラー情報',
@@ -358,18 +320,17 @@ describe('/todos/{id}', () => {
         })
         .expect(400)
         .end((err, res) => {
-          console.log('test', err, res.body)
           if (err) {
             return done(err)
           }
           // 評価
-          expect(validator.validate(res.body, schema)).to.be.true
+          expect(validator.validate(res.body, schema)).to.equal(true)
           done()
         })
     })
 
     // 存在しない
-    it('should respond with 404 A todo with the specified...', done => {
+    it('todo更新 異常 データなし', done => {
       const schema = {
         'type': 'object',
         'title': 'エラー情報',
@@ -400,7 +361,7 @@ describe('/todos/{id}', () => {
             return done(err)
           }
           // 評価
-          expect(validator.validate(res.body, schema)).to.be.true
+          expect(validator.validate(res.body, schema)).to.equal(true)
           done()
         })
     })
@@ -416,8 +377,16 @@ describe('/todos/{id}', () => {
      * 各テスト前の処理
      */
     beforeEach(done => {
-      createTodo(done, id => {
-        todoId = id
+      const entry = {
+        title: '買い物',
+        content: '豆腐、りんご、魚、コロッケ'
+      }
+      createTodo(entry, (err, res) => {
+        if (err) {
+          done(err)
+        }
+        todoId = res.body._id
+        done()
       })
     })
 
@@ -425,11 +394,13 @@ describe('/todos/{id}', () => {
      * 各テスト後の処理
      */
     afterEach(done => {
-      deleteTodo(done, todoId)
+      deleteTodos(() => {
+        done()
+      })
     })
 
     // 204
-    it('should respond with 204 successful operation', done => {
+    it('todo削除 正常 データあり', done => {
       api.del(`/todos/${todoId}`)
         .set('Content-Type', 'application/json')
         .expect(204)
@@ -438,13 +409,13 @@ describe('/todos/{id}', () => {
             return done(err)
           }
           // 評価
-          expect(res.body).to.be.NaN
+          expect(isNaN(res.body)).to.be.equal(true)
           done()
         })
     })
 
     // 404
-    it('should respond with 404 A todo with the specified...', done => {
+    it('todo削除 異常 データなし', done => {
       const schema = {
         'type': 'object',
         'title': 'エラー情報',
@@ -470,9 +441,70 @@ describe('/todos/{id}', () => {
             return done(err)
           }
           // 評価
-          expect(validator.validate(res.body, schema)).to.be.true
+          expect(validator.validate(res.body, schema)).to.equal(true)
           done()
         })
     })
   })
 })
+
+/**
+ * todo情報を作成
+ *
+ * @param {object} entry 入力エントリ
+ * @param {Function} callback コールバック関数
+ */
+function createTodo (entry, callback) {
+  api.post('/todos')
+    .set('Content-Type', 'application/json')
+    .send(entry)
+    .expect(201)
+    .end((err, res) => {
+      callback(err, res)
+    })
+}
+
+/**
+ * todo情報全取得
+ */
+async function getTodoIds () {
+  return new Promise((resolve, reject) => {
+    api.get('/todos')
+      .set('Content-Type', 'application/json')
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          reject(err)
+        }
+        resolve(res.body.map(x => x._id))
+      })
+  })
+}
+
+/**
+ * todoリストを削除
+ */
+async function deleteTodos (callback) {
+  const todoIds = await getTodoIds()
+
+  for (let todoId of todoIds) {
+    await deleteTodo(todoId)
+  }
+  if (callback) {
+    callback()
+  }
+}
+
+/**
+ * todo情報を削除
+ *
+ * @param {string} todoId todo識別子
+ */
+async function deleteTodo (todoId) {
+  return new Promise((resolve, reject) => {
+    api.del(`/todos/${todoId}`)
+      .set('Content-Type', 'application/json')
+      .expect(204)
+      .end(() => resolve())
+  })
+}
