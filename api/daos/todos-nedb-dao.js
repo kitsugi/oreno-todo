@@ -34,7 +34,7 @@ module.exports = class TodosNedbDAO {
       query.push({ done: done })
     }
 
-    this.db.find({ $and: query }, (err, docs) => {
+    this.db.find({ $and: query }).sort({ updatedAt: -1 }).exec((err, docs) => {
       callback(err, docs)
     })
   }
