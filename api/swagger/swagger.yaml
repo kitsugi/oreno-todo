@@ -23,7 +23,7 @@ paths:
     get:
       tags: [Todos]
       summary: todo情報検索
-      description: クエリに一致するtodo情報を更新日時の降順で一覧取得します。
+      description: クエリに一致するtodo情報を一覧取得します。(更新日時の降順)
       operationId: getTodoList
       parameters:
         - in: query
@@ -37,7 +37,7 @@ paths:
           description: ステータス
       responses:
         '200':
-          description: successful operation
+          description: OK
           schema:
             title: todos
             type: array
@@ -51,17 +51,17 @@ paths:
       parameters:
         - in: body
           name: entry
-          description: todo entry parameter
+          description: 入力パラメータ
           required: false
           schema:
             $ref: '#/definitions/TodoEntry'
       responses:
         '201':
-          description: successful operation
+          description: CREATED
           schema:
             $ref: '#/definitions/TodoModel'
         '400':
-          description: unexpected error
+          description: BAD REQUEST
           schema:
             $ref: "#/definitions/Error"
   /todos/{id}:
@@ -81,11 +81,11 @@ paths:
       operationId: getTodoById
       responses:
         '200':
-          description: successful operation
+          description: OK
           schema:
             $ref: '#/definitions/TodoModel'
         '404':
-          description: unexpected error
+          description: NOT FOUND
           schema:
             $ref: "#/definitions/Error"
     put:
@@ -102,11 +102,11 @@ paths:
             $ref: '#/definitions/TodoEntry'
       responses:
         '200':
-          description: successful operation
+          description: OK
           schema:
             $ref: '#/definitions/TodoModel'
         '404':
-          description: unexpected error
+          description: NOT FOUND
           schema:
             $ref: "#/definitions/Error"
     delete:
@@ -116,9 +116,9 @@ paths:
       operationId: deleteTodo
       responses:
         '204':
-          description: successful operation
+          description: NO CONTENT
         '404':
-          description: unexpected error
+          description: NOT FOUND
           schema:
             $ref: "#/definitions/Error"
   /swagger:
