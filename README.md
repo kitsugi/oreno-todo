@@ -1,6 +1,16 @@
-Todo Sample App
+Todo API
 ===============
 **Version:** 1.0.0
+
+## 概要
+
+- Todo API
+    - 検索、登録、更新、削除
+    - 認証なし (一人用)
+- Swagger + Express.js
+- ファイル保存 (NeDB)
+- ログ出力
+
 
 ## アプリケーション構成
 
@@ -48,30 +58,23 @@ Todo Sample App
 | [config](https://github.com/lorenwest/node-config) | 2.0.1 | 設定ファイル読み込み |
 | [nedb](https://github.com/louischatriot/nedb) | 1.8.0 | NoSQLデータベース |
 
-### テスト
-
-| モジュール名 | バージョン | 補足 |
-|----|---:|----|
-| [mocha](https://github.com/mochajs/mocha) | 2.5.3 | テストフレームワーク |
-| [chai](https://github.com/chaijs/chai) | 3.5.0 | テストアサーション |
-| [z-schema](https://github.com/zaggino/z-schema) | 3.23.0 | スキーマ検証 |
-| [supertest](https://github.com/visionmedia/supertest) | 1.2.0 | HTTPリクエスト |
-
 
 ## 操作
-### Swagger Editor起動
+
+### App起動
 ```sh
-$ swagger project edit
+$ swagger project start
 ```
 
-### テスト実行
-```sh
-$ swagger project test
-```
-
-### ドキュメント表示
+### ドキュメント表示、操作
 > http://localhost:8080/docs
 
+#### 静的なドキュメント
+- docs/api-doc.md
+    - [swagger-markdown](https://github.com/syroegkin/swagger-markdown) でswagger.yamlからMarkdown形式に変換
+- docs/api-doc.html
+    - [swagger2markup-cli](https://github.com/Swagger2Markup/swagger2markup-cli) でswagger.yamlからasciidocs形式に変換
+    - [asciidoctor](https://github.com/asciidoctor/asciidoctor) でasciidocs形式からhtml形式に変換
 
 ## /todos
 
@@ -195,3 +198,54 @@ $ swagger project test
 | ---- | ---- | ----------- | -------- |
 | code | string | コード | Yes |
 | message | string | メッセージ | Yes |
+
+## テスト
+
+### テスト
+
+| モジュール名 | バージョン | 補足 |
+|----|---:|----|
+| [mocha](https://github.com/mochajs/mocha) | 2.5.3 | テストフレームワーク |
+| [chai](https://github.com/chaijs/chai) | 3.5.0 | テストアサーション |
+| [z-schema](https://github.com/zaggino/z-schema) | 3.23.0 | スキーマ検証 |
+| [supertest](https://github.com/visionmedia/supertest) | 1.2.0 | HTTPリクエスト |
+
+### テスト実行
+```sh
+$ swagger project test
+```
+
+### テストデータ
+
+```sh
+{
+  "title": "本購入",
+  "content": "Docker/Kubernetes 実践コンテナ開発入門",
+  "done": true
+}
+{
+  "title": "ハイキング",
+  "content": "埼玉県飯能市 25km",
+  "done": true
+}
+{
+  "title": "ジョギング",
+  "content": "埼玉県さいたま市 5km",
+  "done": false
+}
+{
+  "title": "買い物",
+  "content": "豆腐、りんご、魚、コロッケ",
+  "done": true
+}
+{
+  "title": "散歩",
+  "content": "犬の散歩、買い物袋",
+  "done": false
+}
+{
+  "title": "買い物",
+  "content": "お菓子、ジュース、ビニール袋",
+  "done": false
+}
+```
