@@ -180,5 +180,7 @@ definitions:
     properties:
       code:
         type: string
+        description: コード
       message:
         type: string
+        description: メッセージ
