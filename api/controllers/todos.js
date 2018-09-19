@@ -1,8 +1,8 @@
 'use strict'
 
+const Error = require('../models/error')
 const DAO = require('../daos')
 const dao = DAO.getInstance()
-const Error = require('../models/error')
 
 /**
  * todo一覧を取得します。
@@ -38,7 +38,7 @@ function getTodoById (req, res) {
     if (doc) {
       res.status(200).json(doc)
     } else {
-      res.status(404).json(new Error(404, 'A todo with the specified ID was not found.'))
+      res.status(404).json(new Error('404', 'A todo with the specified ID was not found.'))
     }
   })
 }
@@ -58,7 +58,7 @@ function createTodo (req, res) {
       res.status(201).json(newDoc)
     })
   } else {
-    res.status(400).json(new Error(400, 'title empty'))
+    res.status(400).json(new Error('400', 'title empty'))
   }
 }
 
@@ -72,18 +72,14 @@ function updateTodo (req, res) {
   const todoId = req.swagger.params.id.value
   const entry = req.swagger.params.entry.value
 
-  if (entry.title) {
-    dao.update(todoId, entry, (err, numAffected) => {
-      console.log(err, numAffected)
-      if (numAffected > 0) {
-        getTodoById(req, res)
-      } else {
-        res.status(404).json(new Error(404, 'A todo with the specified ID was not found.'))
-      }
-    })
-  } else {
-    res.status(400).json(new Error(400, 'title empty'))
-  }
+  dao.update(todoId, entry, (err, numAffected) => {
+    console.log(err, numAffected)
+    if (numAffected > 0) {
+      getTodoById(req, res)
+    } else {
+      res.status(404).json(new Error('404', 'A todo with the specified ID was not found.'))
+    }
+  })
 }
 
 /**
@@ -100,7 +96,7 @@ function deleteTodo (req, res) {
     if (numRemoved > 0) {
       res.status(204).end()
     } else {
-      res.status(404).json(new Error(404, 'A todo with the specified ID was not found.'))
+      res.status(404).json(new Error('404', 'A todo with the specified ID was not found.'))
     }
   })
 }

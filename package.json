@@ -1,6 +1,6 @@
 {
   "name": "oreno-todo",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
   "description": "todo-sample-app",
   "keywords": [],
@@ -8,7 +8,12 @@
   "license": "Apache 2.0",
   "main": "app.js",
   "dependencies": {
+    "body-parser": "^1.18.3",
+    "config": "^2.0.1",
     "express": "^4.12.3",
+    "fs-extra": "^7.0.0",
+    "morgan": "^1.9.1",
+    "morgan-body": "^2.4.5",
     "nedb": "^1.8.0",
     "swagger-express-mw": "^0.1.0"
   },
@@ -26,6 +31,8 @@
     "test": "swagger project test"
   },
   "standard": {
-    "env": [ "mocha" ]
+    "env": [
+      "mocha"
+    ]
   }
 }

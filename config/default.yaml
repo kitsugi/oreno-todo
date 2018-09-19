@@ -1,3 +1,7 @@
+# 設定ファイル
+database:
+  path: tmp/todo.db
+
 # swagger configuration file
 
 # values in the swagger hash are system configuration for swagger-node
@@ -35,3 +39,4 @@ swagger:
       name: swagger_raw
 
 # any other values in this file are just loaded into the config for application access...
+

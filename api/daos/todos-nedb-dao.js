@@ -2,6 +2,7 @@
 
 const Datastore = require('nedb')
 const Todo = require('../models/todo')
+const config = require('config')
 
 module.exports = class TodosNedbDAO {
   /**
@@ -10,7 +11,7 @@ module.exports = class TodosNedbDAO {
   constructor () {
     this.index = 0
     this.db = new Datastore({
-      filename: 'todo.db',
+      filename: config.database.path,
       autoload: true,
       timestampData: true
     })

@@ -310,7 +310,7 @@ describe('/todos', () => {
         ],
         'properties': {
           'code': {
-            'type': 'integer'
+            'type': 'string'
           },
           'message': {
             'type': 'string'

@@ -169,7 +169,7 @@ describe('/todos/{id}', () => {
         ],
         'properties': {
           'code': {
-            'type': 'integer'
+            'type': 'string'
           },
           'message': {
             'type': 'string'
@@ -291,7 +291,7 @@ describe('/todos/{id}', () => {
     })
 
     // 項目違い
-    it('todo更新 異常 タイトル空', done => {
+    it('todo更新 異常 タイトルnull', done => {
       const schema = {
         'type': 'object',
         'title': 'エラー情報',
@@ -301,7 +301,7 @@ describe('/todos/{id}', () => {
         ],
         'properties': {
           'code': {
-            'type': 'integer'
+            'type': 'string'
           },
           'message': {
             'type': 'string'
@@ -312,7 +312,7 @@ describe('/todos/{id}', () => {
       api.put(`/todos/${todoId}`)
         .set('Content-Type', 'application/json')
         .send({
-          title: ''
+          title: null
         })
         .expect(400)
         .end((err, res) => {
@@ -336,7 +336,7 @@ describe('/todos/{id}', () => {
         ],
         'properties': {
           'code': {
-            'type': 'integer'
+            'type': 'string'
           },
           'message': {
             'type': 'string'
@@ -421,7 +421,7 @@ describe('/todos/{id}', () => {
         ],
         'properties': {
           'code': {
-            'type': 'integer'
+            'type': 'string'
           },
           'message': {
             'type': 'string'

@@ -1,6 +1,6 @@
 swagger: "2.0"
 info:
-  version: "0.2.0"
+  version: "1.0.0"
   title: Todo Sample App
 # during dev, should point to your local machine
 host: localhost:8080
@@ -43,10 +43,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/TodoModel'
-        default:
-          description: unexpected error
-          schema:
-            $ref: "#/definitions/Error"
     post:
       tags: [Todos]
       summary: todo情報登録
@@ -64,7 +60,7 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/TodoModel'
-        default:
+        '400':
           description: unexpected error
           schema:
             $ref: "#/definitions/Error"
@@ -88,7 +84,7 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/TodoModel'
-        default:
+        '404':
           description: unexpected error
           schema:
             $ref: "#/definitions/Error"
@@ -109,7 +105,7 @@ paths:
           description: successful operation
           schema:
             $ref: '#/definitions/TodoModel'
-        default:
+        '404':
           description: unexpected error
           schema:
             $ref: "#/definitions/Error"
@@ -121,7 +117,7 @@ paths:
       responses:
         '204':
           description: successful operation
-        default:
+        '404':
           description: unexpected error
           schema:
             $ref: "#/definitions/Error"
@@ -183,6 +179,6 @@ definitions:
     required: [code, message]
     properties:
       code:
-        type: integer
+        type: string
       message:
         type: string

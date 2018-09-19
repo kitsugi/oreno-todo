@@ -7,7 +7,7 @@ module.exports = class Error {
   /**
    * インスタンスを初期化します。
    *
-   * @param {integer} code コード
+   * @param {string} code コード
    * @param {string} message メッセージ
    */
   constructor (code, message) {
