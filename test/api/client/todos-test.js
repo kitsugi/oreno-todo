@@ -1,13 +1,9 @@
 'use strict'
 
-var chai = require('chai')
-var ZSchema = require('z-schema')
-var customFormats = module.exports = zSchema => {
-  // Placeholder file for all custom-formats in known to swagger.json
-  // as found on
-  // https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#dataTypeFormat
-
-  var decimalPattern = /^\d{0,8}.?\d{0,4}[0]+$/
+const chai = require('chai')
+const ZSchema = require('z-schema')
+const customFormats = module.exports = zSchema => {
+  const decimalPattern = /^\d{0,8}.?\d{0,4}[0]+$/
 
   /** Validates floating point as decimal / money (i.e: 12345678.123400..) */
   zSchema.registerFormat('double', val => {
@@ -50,10 +46,10 @@ var customFormats = module.exports = zSchema => {
 
 customFormats(ZSchema)
 
-var validator = new ZSchema({})
-var supertest = require('supertest')
-var api = supertest('http://localhost:8080') // supertest init
-var expect = chai.expect
+const validator = new ZSchema({})
+const supertest = require('supertest')
+const api = supertest('http://localhost:8080') // supertest init
+const expect = chai.expect
 
 /**
  * todosテスト
