@@ -2,7 +2,7 @@ Todo API
 ===============
 **Version:** 1.0.0
 
-## 概要
+## 概要
 
 - Todo API
     - 検索、登録、更新、削除
@@ -10,6 +10,7 @@ Todo API
 - Swagger + Express.js
 - ファイル保存 (NeDB)
 - ログ出力
+- JavaScript Standard Style を適用
 
 
 ## アプリケーション構成
