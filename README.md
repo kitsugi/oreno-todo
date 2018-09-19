@@ -70,7 +70,7 @@ $ swagger project start
 ### ドキュメント表示、操作
 > http://localhost:8080/docs
 
-#### 静的なドキュメント
+#### 静的なドキュメント
 - docs/api-doc.md
     - [swagger-markdown](https://github.com/syroegkin/swagger-markdown) でswagger.yamlからMarkdown形式に変換
 - docs/api-doc.html
