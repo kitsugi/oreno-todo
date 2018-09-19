@@ -72,7 +72,7 @@ $ swagger project start
 
 #### 静的なドキュメント
 - docs/api-doc.md
-    - [swagger-markdown](https://github.com/syroegkin/swagger-markdown) でswagger.yamlからMarkdown形式に変換
+    - [swagger-markdown](https://github.com/syroegkin/swagger-markdown) でswagger.yamlからMarkdown形式に変換
 - docs/api-doc.html
     - [swagger2markup-cli](https://github.com/Swagger2Markup/swagger2markup-cli) でswagger.yamlからasciidocs形式に変換
     - [asciidoctor](https://github.com/asciidoctor/asciidoctor) でasciidocs形式からhtml形式に変換
