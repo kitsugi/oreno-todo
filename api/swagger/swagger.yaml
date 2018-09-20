@@ -43,6 +43,10 @@ paths:
             type: array
             items:
               $ref: '#/definitions/TodoModel'
+        '500':
+          description: INTERNAL SERVER ERROR
+          schema:
+            $ref: "#/definitions/Error"
     post:
       tags: [Todos]
       summary: todo情報登録
@@ -62,6 +66,10 @@ paths:
             $ref: '#/definitions/TodoModel'
         '400':
           description: BAD REQUEST
+          schema:
+            $ref: "#/definitions/Error"
+        '500':
+          description: INTERNAL SERVER ERROR
           schema:
             $ref: "#/definitions/Error"
   /todos/{id}:
@@ -88,6 +96,10 @@ paths:
           description: NOT FOUND
           schema:
             $ref: "#/definitions/Error"
+        '500':
+          description: INTERNAL SERVER ERROR
+          schema:
+            $ref: "#/definitions/Error"
     put:
       tags: [Todos]
       summary: todo情報更新
@@ -109,6 +121,10 @@ paths:
           description: NOT FOUND
           schema:
             $ref: "#/definitions/Error"
+        '500':
+          description: INTERNAL SERVER ERROR
+          schema:
+            $ref: "#/definitions/Error"
     delete:
       tags: [Todos]
       summary: todo情報削除
@@ -119,6 +135,10 @@ paths:
           description: NO CONTENT
         '404':
           description: NOT FOUND
+          schema:
+            $ref: "#/definitions/Error"
+        '500':
+          description: INTERNAL SERVER ERROR
           schema:
             $ref: "#/definitions/Error"
   /swagger:
