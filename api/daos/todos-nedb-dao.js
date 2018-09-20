@@ -22,9 +22,8 @@ module.exports = class TodosNedbDAO {
    *
    * @param {string} keyword 検索キーワード
    * @param {boolean} done 完了フラグ
-   * @param {function(err, docs)} callback コールバック関数
    */
-  search (keyword, done, callback) {
+  async search (keyword, done) {
     const query = []
     if (keyword) {
       const regex = new RegExp(keyword)
@@ -34,19 +33,29 @@ module.exports = class TodosNedbDAO {
       query.push({ done: done })
     }
 
-    this.db.find({ $and: query }).sort({ updatedAt: -1 }).exec((err, docs) => {
-      callback(err, docs)
+    return new Promise((resolve, reject) => {
+      this.db.find({ $and: query }).sort({ updatedAt: -1 }).exec((err, docs) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(docs)
+        }
+      })
     })
   }
 
   /**
    * todoリストを取得します。
-   *
-   * @param {function(err, docs)} callback コールバック関数
    */
-  getAll (callback) {
-    this.db.find({}, (err, docs) => {
-      callback(err, docs)
+  async getAll () {
+    return new Promise((resolve, reject) => {
+      this.db.find({}, (err, docs) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(docs)
+        }
+      })
     })
   }
 
@@ -54,15 +63,20 @@ module.exports = class TodosNedbDAO {
    * 指定した番号のtodo情報を取得します。
    *
    * @param {string} todoId todo識別子
-   * @param {function(err, doc)} callback コールバック関数
    */
-  getById (todoId, callback) {
-    this.db.findOne({ _id: todoId }, (err, doc) => {
-      let todo = null
-      if (doc) {
-        todo = Todo.create(doc)
-      }
-      callback(err, todo)
+  async getById (todoId) {
+    return new Promise((resolve, reject) => {
+      this.db.findOne({ _id: todoId }, (err, doc) => {
+        if (err) {
+          reject(err)
+        } else {
+          let todo = null
+          if (doc) {
+            todo = Todo.create(doc)
+          }
+          resolve(todo)
+        }
+      })
     })
   }
 
@@ -70,13 +84,18 @@ module.exports = class TodosNedbDAO {
    * todo情報を作成します。
    *
    * @param {object} entry エントリ
-   * @param {function(err, doc)} callback コールバック関数
    */
-  create (entry, callback) {
+  async create (entry) {
     const todo = Todo.create(entry)
 
-    this.db.insert(todo, (err, newDoc) => {
-      callback(err, newDoc)
+    return new Promise((resolve, reject) => {
+      this.db.insert(todo, (err, newDoc) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(newDoc)
+        }
+      })
     })
   }
 
@@ -85,11 +104,16 @@ module.exports = class TodosNedbDAO {
    *
    * @param {string} todoId todo識別子
    * @param {object} entry todoエントリ
-   * @param {function(err, numAffected)} callback コールバック関数
    */
-  update (todoId, entry, callback) {
-    this.db.update({ _id: todoId }, { $set: entry }, {}, (err, numAffected) => {
-      callback(err, numAffected)
+  async update (todoId, entry) {
+    return new Promise((resolve, reject) => {
+      this.db.update({ _id: todoId }, { $set: entry }, {}, (err, numAffected) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(numAffected)
+        }
+      })
     })
   }
 
@@ -97,11 +121,16 @@ module.exports = class TodosNedbDAO {
    * 指定した識別子のtodo情報を削除します。
    *
    * @param {string} todoId todo識別子
-   * @param {function(err, numRemoved)} callback コールバック関数
    */
-  delete (todoId, callback) {
-    this.db.remove({ _id: todoId }, {}, (err, numRemoved) => {
-      callback(err, numRemoved)
+  async delete (todoId) {
+    return new Promise((resolve, reject) => {
+      this.db.remove({ _id: todoId }, {}, (err, numRemoved) => {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(numRemoved)
+        }
+      })
     })
   }
 }
